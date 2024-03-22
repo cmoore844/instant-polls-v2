@@ -1,0 +1,22 @@
+Component Tree
+
+    Data Components
+    - App.svelte
+    - CreatePollForm
+    - PollList
+        -Poll Details
+    
+    Shared/Styling Components
+    - Header 
+    - Footer
+    - Button
+    - Card
+    - Tabs
+    
+    Stores
+    - PollStore
+
+    ToDo
+    - API Endpoints
+    - Fetch API Handling
+    - Consider dual stores. An additional store to manage response states. 

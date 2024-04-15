@@ -3,6 +3,7 @@
     import Pollstore from "../stores/PollStore";
     import Button from "../shared/Button.svelte";
     import { createEventDispatcher } from "svelte";
+    import { construct_svelte_component } from "svelte/internal";
     let dispatch = createEventDispatcher();
 
     //fields is an object that will hold all the main polling content. 
@@ -13,7 +14,7 @@
     let valid = false;
     
 
-    const onSumbit = () => {
+    const onSumbit = async () => {
         //if valid remains true, the poll will be submitted successfully. 
         //If not, one of the errors will be triggered, and poll will not be submitted.
         valid = true;
@@ -45,10 +46,22 @@
         // add new poll
         if(valid){
             let poll = {...fields, votesA: 0, votesB: 0, id: Math.random()}
+            console.log(poll);
             //save poll to store
             Pollstore.update(currentPolls => {
                 return [poll, ...currentPolls];
-            })
+            });
+            // console.log("Form Submitted")
+            // try{
+            //     const fetchData = fetch('https://jsonplaceholder.typicode.com/posts/1');
+            //     const response = fetchData.json();
+            //     console.log(response);
+           
+
+            // } catch(err){
+            //     console.log(err.message);
+            // }
+
             dispatch('add');
         }
 

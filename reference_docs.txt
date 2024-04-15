@@ -14,7 +14,12 @@ Component Tree
     - Tabs
     
     Stores
-    - PollStore
+    - PollStore (Data Store will talk to the API to send data)
+
+    API Endpoints
+    - /api/addNewPoll/v1 (POST)
+    - /api/getPollHistory/v1 (GET)
+    - /api/castVotes/v1 (PATCH)
 
     ToDo
     - API Endpoints

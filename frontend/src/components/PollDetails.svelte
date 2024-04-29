@@ -30,6 +30,7 @@
 
         if(option === 'a'){
             upvotedPoll.votesA++;
+            //try-catch block to handle capturing votes and recording to the DB
         }
         if(option === 'b'){
             upvotedPoll.votesB++;
@@ -39,12 +40,15 @@
         });
     };
 
-    //event handler to delete a poll
+    //event handler to delete a poll ONLY from the UI. Retains the DB record
     const handleDelete = (id) => {
       Pollstore.update(currentPolls => {
         return currentPolls.filter(poll => poll.id != id);
       })
     };
+
+    //event handler to update a poll when user upvotes voteA or voteB
+                
 
 //the below warning is due to non-interative element having a listener event. 
 //This can be resolved by making the <span> a <button>

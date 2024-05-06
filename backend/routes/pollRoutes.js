@@ -30,11 +30,15 @@ router.get('/api/getPoll/v1/:id', async (req, res) => {
 
 //ADD a new poll
 router.post('/api/addNewPoll/v1', async (req, res) => {
+
     try{
-        const newPoll = await Poll.create(req.body); // creates a new record from the body of the API request 
-            newPoll.save(); //saves record to DB
-            console.log(newPoll);
+        //check if the new question is unique and not already recorded in the database. 
+
+            const newPoll = await Poll.create(req.body); // creates a new record from the body of the API request 
+                newPoll.save(); //saves record to DB
+                console.log("POST SUCCESS!", newPoll);
         return res.status(200).send(newPoll);
+
     } catch(err){
         res.status(500).send("Something went wrong")
         console.log(err);
@@ -60,7 +64,6 @@ router.delete('/api/removePoll/v1/:id', async (req, res) => {
     try{
         const deletePoll = await Poll.findByIdAndDelete(req.params.id);
         return res.status(200).send("Poll Deleted" + "\n" + deletePoll);
-        console.log("A Poll was deleted!");
     } catch(err){
         res.status(500).send("Poll Not Found");
         console.log(err);

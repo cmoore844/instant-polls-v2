@@ -1,8 +1,9 @@
 <script>
     import Button from "../shared/Button.svelte";
-    import Pollstore from "../stores/PollStore";
+    import pollstore from "../stores/store";
     import Card from "./Card.svelte";
     import { tweened } from 'svelte/motion';
+    import axios from 'axios';
     export let poll;
 
     //reactive values that are bound to in-line styling elements. 
@@ -23,33 +24,41 @@
     //handle votes. Option is the answer choices and we are taking in the unique id of the poll
     //handleVote updates the store with the new poll data and increments if a person votes on the poll
     const handleVote = (option, id) => {
-        Pollstore.update(currentPolls => {
+        pollstore.update(currentPolls => {
 
         let copiedPolls = [...currentPolls];
-        let upvotedPoll = copiedPolls.find(poll => poll.id == id);
+        let upvotedPoll = copiedPolls.find(poll => poll._id == id);
+        console.log("UpvotedPoll", upvotedPoll)
 
         if(option === 'a'){
             upvotedPoll.votesA++;
-            //try-catch block to handle capturing votes and recording to the DB
+            console.log(upvotedPoll.votesA)
+
+            //try-catch block
+           axios.patch(`http://localhost:4000/api/castVotes/v1/${poll._id}`, upvotedPoll);
+        
+            
         }
         if(option === 'b'){
             upvotedPoll.votesB++;
+            //try-catch block
+            //axios.patch(endpoint,{id})
         }
 
+        console.log(copiedPolls)
         return copiedPolls;
+        
         });
     };
 
     //event handler to delete a poll ONLY from the UI. Retains the DB record
     const handleDelete = (id) => {
-      Pollstore.update(currentPolls => {
+      pollstore.update(currentPolls => {
         return currentPolls.filter(poll => poll.id != id);
       })
     };
 
-    //event handler to update a poll when user upvotes voteA or voteB
-                
-
+    
 //the below warning is due to non-interative element having a listener event. 
 //This can be resolved by making the <span> a <button>
 </script>
@@ -58,16 +67,17 @@
     <div class="poll">
         <h3> {poll.question}</h3>
         <p>Total Votes: {totalVotes}</p>
-            <div class="answer" on:click={() => handleVote('a', poll.id)}>
+            <div class="answer" on:click={() => handleVote('a', poll._id)}>
                 <div class="percent percent-a" style="width: {$tweenedA}% "></div>
                 <span>{ poll.answerA } ({ poll.votesA } votes)</span>
+                
             </div>
-            <div class="answer" on:click={() => handleVote('b', poll.id)}>
+            <div class="answer" on:click={() => handleVote('b', poll._id)}>
                 <div class="percent percent-b" style="width: {$tweenedB}% "></div>
                 <span>{ poll.answerB } ({ poll.votesB } votes)</span>
             </div>
-            <div class="delete">
-              <Button flat={true} on:click={() => handleDelete(poll.id)}>Delete</Button>
+            <div class="submit">
+              <Button flat={true} on:click={() => handleDelete(poll.id)}>Submit</Button>
             </div>
         </div>
 </Card>
@@ -109,8 +119,8 @@
     border-left: 4px solid #45c496;
     background: rgba(69, 196, 150, 0.2)
   }
-  .delete{
+  .submit{
     margin-top: 30px;
-    text-align: center;
+    text-align: right;
   }
 </style>

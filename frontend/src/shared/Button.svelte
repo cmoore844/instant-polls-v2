@@ -17,24 +17,15 @@
         box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
     }
     .primary{
-        background: #d91b42;
+        background: #166b92;
         color: white;
     }
     .secondary{
-        background: #45c496;
+        background: #353c39;
         color: white;
     }
     .flat{
         box-shadow: none;
     }
-    .primary.inverse{
-        color: #d91b42;
-        background: white;
-        border: 2px solid #d91b42;
-    }
-    .secondary.inverse{
-        color: #45c496;
-        background: white;
-        border: 2px solid #45c496
-    }
+   
 </style>

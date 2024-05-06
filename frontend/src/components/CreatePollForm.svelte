@@ -1,10 +1,11 @@
 <script>
 
-    import Pollstore from "../stores/PollStore";
+    import pollstore from "../stores/store";
     import Button from "../shared/Button.svelte";
     import { createEventDispatcher } from "svelte";
     let dispatch = createEventDispatcher();
-    import axios from "axios";
+    import axios from 'axios';
+
 
     //fields is an object that will hold all the main polling content. 
     //errors is an object that will hold all the custom error validations. 
@@ -43,13 +44,14 @@
             errors.answerB = '';
         }
 
-        // add new poll
+        // // add new poll
         if(valid){
             let poll = {...fields, votesA: 0, votesB: 0, id: Math.random()}
             //save poll to store
-            Pollstore.update(currentPolls => {
-                return [poll, ...currentPolls];
-            });
+            //save to DB as a POST REQUESET
+            // pollstore.update(currentPolls => {
+            //     return [poll, ...currentPolls];
+            // });
             try{
                 const newPoll = await axios.post('http://localhost:4000/api/addNewPoll/v1', poll) //post new poll to database
                 console.log("POST SUCCESSFUL..", newPoll.data);

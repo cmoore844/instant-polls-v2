@@ -15,17 +15,7 @@ import { writable, derived } from "svelte/store";
 // ]);
 
 //External PollStore
-
 export const pollstore = writable([]);
 
-/** 
-//Create a derived store to hold the apiData
-**/
-// export const drinkNames = derived(pollstore , ($pollstore ) => {
-//     if($pollstore.drinks){
-//         return $pollstore.drinks.map((drink) => [drink.strDrink, drink.idDrink]);
-//     }
-//     return [];
-// });
 
 export default pollstore;

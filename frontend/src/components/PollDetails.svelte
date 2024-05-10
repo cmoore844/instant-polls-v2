@@ -4,7 +4,9 @@
     import Card from "./Card.svelte";
     import { tweened } from 'svelte/motion';
     import axios from 'axios';
+    import {DateTime} from 'luxon';
     export let poll;
+
 
     //reactive values that are bound to in-line styling elements. 
     //reactive values ONLY update the element itself and not the entire DOM. Useful for visualizing data that is constantly changing.
@@ -21,31 +23,34 @@
 
     //color conditions
 
-    //handle votes. Option is the answer choices and we are taking in the unique id of the poll
-    //handleVote updates the store with the new poll data and increments if a person votes on the poll
+    //date variable
+    const dateCreated = DateTime.fromISO(poll.createdAt).toFormat('MM/dd/yyyy hh:mma ZZZZ')
+
+    //handle votes. Option is the answer choices and we are taking in the unique ID of the poll
+    //handleVote updates the store with the new poll data (upvotedPoll) and increments if a person votes on the poll
     const handleVote = (option, id) => {
-        pollstore.update(currentPolls => {
-
-        let copiedPolls = [...currentPolls];
-        let upvotedPoll = copiedPolls.find(poll => poll._id == id);
-        console.log("UpvotedPoll", upvotedPoll)
-
-        if(option === 'a'){
-            upvotedPoll.votesA++;
-            console.log(upvotedPoll.votesA)
-
-            //try-catch block
-           axios.patch(`http://localhost:4000/api/castVotes/v1/${poll._id}`, upvotedPoll);
+        pollstore.update(currentPolls => { 
         
-            
+        //copied version of polls array after the updated vote
+        let copiedPolls = [...currentPolls];
+        console.log("Copied Polls", copiedPolls)
+
+        //queries the upvoted poll itself based on the object ID
+        let upvotedPoll = copiedPolls.find(poll => poll._id == id);
+        console.log("UpvotedPoll", upvotedPoll);
+
+  //pass reference to votesA or B as an object OR 
+  //use the one patch call and wrap incrementing into a function
+        if(option === 'a'){
+          upvotedPoll.votesA++;
         }
         if(option === 'b'){
-            upvotedPoll.votesB++;
-            //try-catch block
-            //axios.patch(endpoint,{id})
+          upvotedPoll.votesB++;
         }
-
-        console.log(copiedPolls)
+        
+        axios.patch(`http://localhost:4000/api/castVotes/v1/${id}`, upvotedPoll);
+        console.log("POLL", upvotedPoll);
+        
         return copiedPolls;
         
         });
@@ -54,7 +59,7 @@
     //event handler to delete a poll ONLY from the UI. Retains the DB record
     const handleDelete = (id) => {
       pollstore.update(currentPolls => {
-        return currentPolls.filter(poll => poll.id != id);
+        return currentPolls.filter(poll => poll._id != id);
       })
     };
 
@@ -66,7 +71,8 @@
 <Card>
     <div class="poll">
         <h3> {poll.question}</h3>
-        <p>Total Votes: {totalVotes}</p>
+        <p>Total Votes: {totalVotes} 
+        <br>Poll Created: {dateCreated}</p>
             <div class="answer" on:click={() => handleVote('a', poll._id)}>
                 <div class="percent percent-a" style="width: {$tweenedA}% "></div>
                 <span>{ poll.answerA } ({ poll.votesA } votes)</span>
@@ -76,10 +82,12 @@
                 <div class="percent percent-b" style="width: {$tweenedB}% "></div>
                 <span>{ poll.answerB } ({ poll.votesB } votes)</span>
             </div>
-            <div class="submit">
-              <Button flat={true} on:click={() => handleDelete(poll.id)}>Submit</Button>
-            </div>
+            <!-- <div class="submit">
+              <Button flat={true} on:click={handleDelete()}>Submit</Button>
+            </div> -->
+            
         </div>
+
 </Card>
 
 <style>

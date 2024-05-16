@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "server": "cd app/backend && npm start",
+    "client": "cd app/frontend && npm run dev",
+    "fire": "concurrently \"npm run server\" \"npm run client\""
+  },
   "dependencies": {
     "concurrently": "^8.2.2"
   }

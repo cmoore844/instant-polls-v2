@@ -21,9 +21,7 @@
     $: tweenedA.set(percentA);
     $: tweenedB.set(percentB);
 
-    //color conditions
-
-    //date variable
+    //timestamp variable
     const dateCreated = DateTime.fromISO(poll.createdAt).toFormat('MM/dd/yyyy hh:mma ZZZZ')
 
     //handle votes. Option is the answer choices and we are taking in the unique ID of the poll
@@ -57,11 +55,11 @@
     };
 
     //event handler to delete a poll ONLY from the UI. Retains the DB record
-    const handleDelete = (id) => {
-      pollstore.update(currentPolls => {
-        return currentPolls.filter(poll => poll._id != id);
-      })
-    };
+    // const handleDelete = (id) => {
+    //   pollstore.update(currentPolls => {
+    //     return currentPolls.filter(poll => poll._id != id);
+    //   })
+    //};
 
     
 //the below warning is due to non-interative element having a listener event. 
@@ -126,9 +124,5 @@
   .percent-b{
     border-left: 4px solid #45c496;
     background: rgba(69, 196, 150, 0.2)
-  }
-  .submit{
-    margin-top: 30px;
-    text-align: right;
   }
 </style>

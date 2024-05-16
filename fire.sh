@@ -1,13 +1,7 @@
 #!/bin/bash
-
-# This script is to start a server and UI concurrently.
-
-echo "############"
-echo "Fire Up!..."
-echo "############"
-
-cd backend && npm run dev &
-cd ../frontend && npm run dev
-
-
-echo "######### Fired Up! -Success #########
+# This script is to start a server side and client side concurrently.
+  ##// "dev": "concurrently \"nodemon server.js\" \"npm run client\""##
+echo "######FIRE SHELL!!!######"
+sleep 1
+cd backend && npm run dev
+echo "######FIRED UP!!! -SUCCESS######"

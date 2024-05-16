@@ -33,8 +33,12 @@ router.post('/api/addNewPoll/v1', async (req, res) => {
 
     try{
         //check if the new question is unique and not already recorded in the database. 
-
-            const newPoll = await Poll.create(req.body); // creates a new record from the body of the API request 
+        const pollExists = await Poll.findOne({question: req.body.question})
+            if(pollExists){
+                res.status(400).send({ message: "User already exists" });
+            }
+            // creates a new record from the body of the API request 
+            const newPoll = await Poll.create(req.body);
                 newPoll.save(); //saves record to DB
                 console.log("POST SUCCESS!", newPoll);
         return res.status(200).send(newPoll);

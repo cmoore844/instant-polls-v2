@@ -10,8 +10,9 @@ const pollSchema = new Schema({
     answerB: String,
     votesA: Number,
     votesB: Number,
+    createdAt: Number,
 },
-{timestamps: true}); //sets timestamps for when record is created
+{expireAfterSeconds: 5}); //sets timestamps for when record is created and when it expires
 
 //exports Poll schema to be used by routes and database 
 const Poll = mongoose.model('Poll',pollSchema);

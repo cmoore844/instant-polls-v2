@@ -19,7 +19,9 @@
     "rollup-plugin-css-only": "^4.3.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.1.2",
-    "svelte": "^3.59.2"
+    "svelte": "^3.59.2",
+    "svelte-loading-spinners": "^0.3.6",
+    "toastify": "^2.0.1"
   },
   "dependencies": {
     "sirv-cli": "^2.0.0"

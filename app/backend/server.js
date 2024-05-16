@@ -25,6 +25,6 @@ mongoose.connect(URI)
 
 
 //select the port to listen to requests coming to express/node server
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log("Express listening on PORT 4000!");
 })
